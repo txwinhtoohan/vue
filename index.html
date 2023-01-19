@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hello world</h1>
+    <div id="app">
+        <ul>
+            <li v-for="color in colors">{{ color }}</li>
+        </ul>
+        <ol>
+            <li v-for="user in users">{{ user.name }} live in {{ user.address }}.</li>
+        </ol>
+    </div>
+
+
+    <div id="root">
+
+        <h1>{{ title }}</h1>
+        <form @submit.prevent="addItem">
+            <input type="text" v-model="newItem" >
+            <button type="submit">Add Item</button>
+        </form>
+        <ul>
+            <li v-for="(todo, index) in todos">
+                <input type="checkbox" v-model="todo.completed">
+                <span :class="todo.completed ? 'done' : ''">{{ todo.text }}</span>
+                <button @click="deleteItem(index)">Delete</button>
+            </li>
+        </ul>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app', //element
+        data: {
+            message: 'Hello Vue!',
+            colors: ['red', 'green', 'blue', 'yellow'],
+            users: [
+                { name: 'Mg Mg', address: 'Yangon' },
+                { name: 'Aung Aung', address: 'Mandalay' },
+                { name: 'Tun Tun', address: 'Nay Pyi Taw' }
+            ]
+
+        }
+    })
+
+    var root = new Vue({
+        el: '#root',
+        data: {
+            title: 'Todo List',
+            newItem: '',
+            todos: [
+                {text: 'Go shop', completed: false},
+                {text: 'Buy Egg', completed: false},
+            ]
+        },
+        methods: {
+            addItem() {
+                let item = {
+                    text: this.newItem,
+                    completed: false
+                }
+                // this.todos.push(this.newItem);
+                this.todos = [...this.todos, item];
+
+                this.newItem = '';
+            },
+            deleteItem(index) {
+                this.todos.splice(index, 1);
+            }
+        }
+    });
+</script>
+
+</html>
